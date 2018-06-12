@@ -78,8 +78,24 @@ public class UVa_11235 {
 				build(right(p), mid+1, r);
 				int p1 = st[left(p)];
 				int p2 = st[right(p)];
-				st[p] = terms[p1]>=terms[p2] ? p1 : p2; 
+				st[p] = terms[p1]<=terms[p2] ? p1 : p2; 
 			}
+		}
+		
+		void update(int p, int l, int r, int index, int val) {
+			if(l<r) {
+				int mid = (l+r)/2;
+				if(l<=index && index<=mid) update(left(p), l, mid, index, val);
+				else update(right(p), mid+1, r, index, val);
+				int p1 = st[left(p)];
+				int p2 = st[right(p)];
+				st[p] = terms[p1]<=terms[p2] ? p1 : p2; 
+			}
+		}
+		
+		void update(int index, int val) {
+			terms[index] = val;
+			update(1, 0, terms.length-1, index, val);
 		}
 		
 		int rmq(int p, int l, int r, int i, int j) {
@@ -90,7 +106,7 @@ public class UVa_11235 {
 			int p2 = rmq(right(p), mid+1, r, i, j);
 			if(p1==-1) return p2;
 			if(p2==-1) return p1;
-			return terms[p1]>=terms[p2] ? p1 : p2;
+			return terms[p1]<=terms[p2] ? p1 : p2;
 		}
 		
 		int rmq(int i, int j) {
